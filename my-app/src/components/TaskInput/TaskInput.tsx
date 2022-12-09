@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Todo } from '../../@types/todo.type'
 import styles from './taskInput.module.scss'
@@ -20,9 +20,11 @@ function TaskInput(props: TaskInputProps & typeof injectedProps) {
   const [name, setName] = useState<string>('')
   // log(debug)
 
-  const address = {
-    street: '10 Tran Hung Dao'
-  }
+  const address = useMemo(() => {
+    return {
+      street: '10 Tran Hung Dao'
+    }
+  }, [])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -44,10 +46,15 @@ function TaskInput(props: TaskInputProps & typeof injectedProps) {
     }
   }
 
+  //Ngăn ko cho render lại function tion
+  const handleClickTitle = useCallback((value: any) => {
+    console.log(value)
+  }, [])
+
   return (
     <div className='mb-2'>
       {/* <h1 className={styles.title}>To do list typescript</h1> */}
-      <Title address={address} />
+      <Title address={address} handleClickTitle={handleClickTitle} />
       <form className={styles.form} onSubmit={handleSubmit}>
         <input
           type='text'
