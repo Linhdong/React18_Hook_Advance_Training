@@ -7,14 +7,14 @@ import connect, { ExtraInforType } from '../../HOC/connect'
 import TaskList from '../TaskList'
 import { debug, log } from '../../constant'
 
-interface TaskInputProps extends ExtraInforType {
+interface TaskInputProps {
   addTodo: (name: string) => void
   editTodo: (name: string) => void
   finishEditTodo: () => void
   currentTodo: Todo | null
 }
 
-function TaskInput(props: TaskInputProps) {
+function TaskInput(props: TaskInputProps & typeof injectedProps) {
   const { addTodo, currentTodo, editTodo, finishEditTodo, debug, log } = props
   const [name, setName] = useState<string>('')
   log(debug)
@@ -60,5 +60,5 @@ TaskInput.propTypes = {
   finishEditTodo: PropTypes.func.isRequired,
   currentTodo: PropTypes.oneOfType([TodoTypes, PropTypes.oneOf([null])])
 }
-
-export default connect({ debug: debug, log: log })(TaskInput)
+const injectedProps = { debug: debug, log: log }
+export default connect(injectedProps)(TaskInput)
